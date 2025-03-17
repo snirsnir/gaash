@@ -576,11 +576,10 @@
             progressBar.style.display = 'block';
             submitBtn.disabled = true;
             
-            // Create file name with group name
+            // Create file name with group name - שימוש בשם הקבוצה בלבד ללא חותמת זמן
             const fileExtension = file.name.split('.').pop();
-            const safeGroupName = groupName.replace(/[^\w\s]/gi, '');
-            const timestamp = new Date().getTime();
-            const newFileName = `${safeGroupName}_${timestamp}.${fileExtension}`;
+            const safeGroupName = groupName.replace(/[^\w\sא-ת]/gi, ''); // תמיכה בעברית
+            const newFileName = `${safeGroupName}.${fileExtension}`;
             
             // Create a storage reference
             const storageRef = ref(storage, 'volcano-research/' + newFileName);
@@ -644,15 +643,9 @@
                                     const fileCard = document.createElement('div');
                                     fileCard.className = 'file-card';
                                     
-                                    // Extract file name without timestamp
+                                    // Extract file name without extension
                                     const fullName = itemRef.name;
-                                    const nameWithoutExtension = fullName.split('.')[0];
-                                    let displayName = nameWithoutExtension;
-                                    
-                                    // Remove timestamp if exists
-                                    if (displayName.includes('_')) {
-                                        displayName = displayName.split('_')[0];
-                                    }
+                                    const displayName = fullName.split('.')[0];
                                     
                                     fileCard.innerHTML = `
                                         <div class="file-card-header">
